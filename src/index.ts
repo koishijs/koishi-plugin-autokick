@@ -1,4 +1,4 @@
-import { Context } from 'koishi'
+import { Context, Schema } from 'koishi'
 import {} from '@koishijs/plugin-adapter-onebot'
 
 declare module 'koishi' {
@@ -8,25 +8,20 @@ declare module 'koishi' {
 }
 
 export const name = 'autokick'
-export const using = ['database']
+
+export interface Config {}
+
+export const Config: Schema<Config> = Schema.object({})
 
 export function apply(ctx: Context) {
-  ctx = ctx.platform('onebot')
+  ctx = ctx.platform('onebot').guild()
 
-  ctx.model.extend('channel', {
-    autokick: 'integer',
-  })
-
-  ctx.command('autokick [count:number]', '自动踢人', { authority: 3 })
-    .channelFields(['autokick'])
-    .action(async ({ session }, count) => {
-      if (typeof count === 'number') {
-        session.channel.autokick = count
-      }
-      if (!session.channel.autokick) return
+  ctx.command('autokick <threshold:number>', '踢出太久没有发言的群友', { authority: 3 })
+    .action(async ({ session }, threshold) => {
+      if (!threshold) return '请输入一个最大人数。'
 
       let users = await session.onebot.getGroupMemberList(session.guildId)
-      if (session.channel.autokick >= users.length) return '无需踢人。'
+      if (threshold >= users.length) return '群成员数量未超过限制。'
       users = users.sort((a, b) => a.last_sent_time - b.last_sent_time)
       const target = users[0]
       await session.send([

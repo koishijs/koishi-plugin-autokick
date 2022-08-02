@@ -1,21 +1,44 @@
 {
   "name": "koishi-plugin-autokick",
-  "description": "Automatically kick out guild members who least recently chat",
-  "version": "1.0.0",
+  "description": "Kick out least frequent guild members",
+  "version": "1.0.1",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "files": [
     "lib",
     "dist"
   ],
+  "author": "undefined <i@undefined.moe>",
+  "maintainers": [
+    "Shigma <shigma10826@gmail.com>"
+  ],
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/koishijs/koishi-plugin-autokick.git"
+  },
+  "bugs": {
+    "url": "https://github.com/koishijs/koishi-plugin-autokick/issues"
+  },
+  "homepage": "https://github.com/koishijs/koishi-plugin-autokick",
   "scripts": {
     "build": "tsc -b"
+  },
+  "koishi": {
+    "description": {
+      "en": "Kick out least frequent guild members",
+      "zh": "踢出太久没有发言的群友"
+    }
   },
   "keywords": [
     "chatbot",
     "koishi",
-    "plugin"
+    "plugin",
+    "admin",
+    "kick",
+    "group",
+    "guild",
+    "member"
   ],
   "peerDependencies": {
     "koishi": "^4.8.3"
