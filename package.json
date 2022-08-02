@@ -1,7 +1,6 @@
 {
   "name": "koishi-plugin-autokick",
   "description": "Automatically kick out guild members who least recently chat",
-  "private": true,
   "version": "1.0.0",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
@@ -10,7 +9,9 @@
     "dist"
   ],
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "build": "tsc -b"
+  },
   "keywords": [
     "chatbot",
     "koishi",
