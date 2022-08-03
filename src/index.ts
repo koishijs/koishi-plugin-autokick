@@ -21,7 +21,7 @@ export function apply(ctx: Context) {
     .action(async ({ session, options }, threshold) => {
       if (!threshold) return '请输入一个最大人数。'
 
-      let users = await session.onebot.getGroupMemberList(session.guildId)
+      let users = await session.onebot.getGroupMemberList(session.guildId, true)
       if (threshold >= users.length) return options.dry ? '群成员数量未超过限制。' : ''
       users = users.sort((a, b) => a.last_sent_time - b.last_sent_time)
       const target = users[0]
