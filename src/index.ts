@@ -17,11 +17,12 @@ export function apply(ctx: Context) {
   ctx = ctx.platform('onebot').guild()
 
   ctx.command('autokick <threshold:number>', '踢出太久没有发言的群友', { authority: 3 })
-    .action(async ({ session }, threshold) => {
+    .option('dry', '只检测不踢人')
+    .action(async ({ session, options }, threshold) => {
       if (!threshold) return '请输入一个最大人数。'
 
       let users = await session.onebot.getGroupMemberList(session.guildId)
-      if (threshold >= users.length) return '群成员数量未超过限制。'
+      if (threshold >= users.length) return options.dry ? '群成员数量未超过限制。' : ''
       users = users.sort((a, b) => a.last_sent_time - b.last_sent_time)
       const target = users[0]
       await session.send([
@@ -29,6 +30,7 @@ export function apply(ctx: Context) {
         `入群时间：${new Date(target.join_time * 1000)}`,
         `最后发言：${new Date(target.last_sent_time * 1000)}`,
       ].join('\n'))
+      if (options.dry) return
       await session.onebot.setGroupKick(session.guildId, target.user_id)
     })
 }
